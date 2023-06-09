@@ -43,6 +43,7 @@
 #include "pxr/base/tf/ostreamMethods.h"
 
 #include <string>
+#include <mutex>
 #include <unordered_map>
 
 PXR_NAMESPACE_OPEN_SCOPE
@@ -218,7 +219,7 @@ Usd_ClipCache::PopulateClipsForPrim(
     const bool primHasClips = !allClips.empty();
     if (primHasClips) {
         TRACE_SCOPE("Usd_ClipCache::PopulateClipsForPrim (primHasClips)");
-        tbb::mutex::scoped_lock lock;
+        std::scoped_lock lock;
         if (_concurrentPopulationContext) {
             lock.acquire(_concurrentPopulationContext->_mutex);
         }
@@ -260,7 +261,7 @@ Usd_ClipCache::PopulateClipsForPrim(
 SdfLayerHandleSet
 Usd_ClipCache::GetUsedLayers() const
 {
-    tbb::mutex::scoped_lock lock;
+    std::scoped_lock lock;
     if (_concurrentPopulationContext) {
         lock.acquire(_concurrentPopulationContext->_mutex);
     }
@@ -342,7 +343,7 @@ const std::vector<Usd_ClipSetRefPtr>&
 Usd_ClipCache::GetClipsForPrim(const SdfPath& path) const
 {
     TRACE_FUNCTION();
-    tbb::mutex::scoped_lock lock;
+    std::scoped_lock lock;
     if (_concurrentPopulationContext) {
         lock.acquire(_concurrentPopulationContext->_mutex);
     }

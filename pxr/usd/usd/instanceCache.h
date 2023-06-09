@@ -30,7 +30,6 @@
 #include "pxr/usd/sdf/path.h"
 #include "pxr/base/tf/hashmap.h"
 
-#include <tbb/mutex.h>
 #include <map>
 #include <unordered_map>
 #include <vector>
@@ -256,7 +255,7 @@ private:
     SdfPath _GetNextPrototypePath(const Usd_InstanceKey& key);
     
 private:
-    tbb::spin_mutex _mutex;
+    std::mutex _mutex;
 
     // Mapping from instance key <-> prototype prim path.
     // This stores the path of the prototype prim that should be used
