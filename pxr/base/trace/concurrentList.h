@@ -111,7 +111,7 @@ public:
         while (curNode) {
             Node* nodeToDelete = curNode;
             curNode = curNode->next;
-            _alloc.destroy(nodeToDelete);
+            // _alloc.destroy(nodeToDelete);
             _alloc.deallocate(nodeToDelete, 1);
         }
     }
@@ -130,7 +130,7 @@ public:
     /// the newly created item.
     iterator Insert() {
         Node* newNode = _alloc.allocate(1);
-        _alloc.construct(newNode);
+        // _alloc.construct(newNode);
 
         // Add the node to the linked list in an atomic manner.
         do {
